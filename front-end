@@ -1,0 +1,92 @@
+from PySimpleGUI import PySimpleGUI as sg
+
+dtb = 'database.txt'
+
+if not back.archive(dtb):
+    back.creat_file(dtb)
+
+
+def start_window():
+    sg.theme('DarkGrey14')
+    layout = [
+        [sg.Text('Hello my name is davi and this is my first project in Python')],
+        [sg.Text('Hope in like it'.center(75), size=(40, 1))],
+        [sg.Button('Next')]
+    ]
+    return sg.Window('start', layout=layout, finalize=True, resizable=True)
+
+
+def option_window():
+    sg.theme('DarkGrey14')
+    layout = [
+        [sg.Text(f'Choose one of button below'.center(38))],
+        [sg.Text()],
+        [sg.Button('Enter an accont ', key='ente_accont'), sg.Button('Creat a accont', key='crea_accont')],
+        [sg.Text()]
+    ]
+    return sg.Window('Choice', layout=layout, finalize=True, resizable=True)
+
+
+def creat_accont():
+    sg.theme('DarkGrey14')
+    layout = [
+        [sg.Text('Lets go, insert a name and a password '.center(75))],
+        [sg.Text()],
+        [sg.Text(' Name        '), sg.Input(size=(20, 2)), sg.Text('surname'), sg.Input(size=(17, 2))],
+        [sg.Text(' Username  '), sg.Input(key='creat_usuario', size=(20, 2)), sg.Text('@gmail.com')],
+        [sg.Text(' Password   '), sg.Input(key='creat_password', password_char='*', size=(29, 2))],
+        [sg.Text(' Verification '), sg.Input(key='password_verificantio', password_char='*', size=(29, 2))],
+        [sg.Text()],
+        [sg.Button('Return'), sg.Button('Next')]
+    ]
+    return sg.Window('Creat accont', layout=layout, finalize=True, resizable=True)
+
+
+def enter_accont():
+    sg.theme('DarkGrey14')
+    layout = [
+        [sg.Text('Lets look for your accontlet'.center(75))],
+        [sg.Text('enter the account name and password.'.center(65))],
+        [sg.Text()],
+        [sg.Text(' Username'), sg.Input(key='enter_name', size=(30, 2))],
+        [sg.Text(' Password'), sg.Input(key='enter_password', password_char='*', size=(30, 2))],
+        [sg.Text()],
+        [sg.Button('Return'), sg.Button('Next')]
+    ]
+    return sg.Window('enter accont', layout=layout, finalize=True, resizable=True)
+
+
+window1, window2 = start_window(), None
+window3, window4 = '', None
+
+while True:
+
+    window, event, values = sg.read_all_windows()
+
+    if window == window1 and event == sg.WIN_CLOSED:
+        break
+    elif window == window2 and event == sg.WIN_CLOSED:
+        break
+    elif window == window3 and event == sg.WIN_CLOSED:
+        break
+    elif window == window4 and event == sg.WIN_CLOSED:
+        break
+    if window == window1 and event == 'Next':
+        window2 = option_window()
+        window1.hide()
+    elif window == window2 and event == 'crea_accont':
+        window3 = creat_accont()
+        window2.hide()
+    if window == window3 and event == 'Next':
+        back.insert_file(dtb, values['creat_usuario'], values['creat_password'], values['password_verificantio'])
+    elif window == window2 and event == 'ente_accont':
+        window4 = enter_accont()
+        window2.hide()
+    if window == window4 and event == 'Next':
+        back.earch(dtb, values['enter_name'], values['enter_password'])
+    elif window == window3 and event == 'Return':
+        window3.hide()
+        window2.un_hide()
+    elif window == window4 and event == 'Return':
+        window4.hide()
+        window2.un_hide()
