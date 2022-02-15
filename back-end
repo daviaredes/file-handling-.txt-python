@@ -1,0 +1,70 @@
+def archive(dtb):
+    try:
+        a = open(dtb, 'rt')
+        a.close()
+    except FileNotFoundError:
+        return False
+    else:
+        return True
+
+
+def creat_file(dtb):
+    try:
+        a = open(dtb, 'wt+')
+        a.close()
+    except:
+        print('1')
+
+
+def insert_file(dtb, creat_usuario, creat_password, password_verificantio):
+    from PySimpleGUI import PySimpleGUI as sg
+    try:
+        a = open(dtb, 'at')
+    except:
+        print('2')
+    else:
+        try:
+            if creat_usuario.count(' ') > 0:
+                sg.popup_ok('The name cannot be separated')
+            elif len(creat_usuario) == 0 and len(creat_password) > 5:
+                sg.popup_ok('And mandatory to have one name')
+            elif len(creat_usuario) == 0 and len(creat_password) == 0:
+                sg.popup_ok('And mandatory to have one name and password')
+            elif creat_usuario == creat_password:
+                sg.popup_ok('Your Name and your Password not can be the same')
+            elif password_verificantio != creat_password:
+                sg.popup_ok('Your password are not the equals. try again')
+            elif len(creat_password) and len(password_verificantio) < 8:
+                sg.popup_ok('Use 8 characters or more for your password')
+            else:
+                if creat_usuario.count('@gmail.com') or creat_usuario.count('@Gmail.com') > 0:
+                    a.write(f'{creat_usuario}  {creat_password}\n')
+                    sg.popup_ok(f'   Acoount created   '.center(15), f'Welcome {creat_usuario}')
+                else:
+                    a.write(f'{creat_usuario}{"@gmail.com"}  {creat_password}\n')
+                    sg.popup_ok(f'   Account created   '.center(15), f'welcome {creat_usuario}')
+        except:
+            print('3')
+        finally:
+            a.close()
+
+
+def earch(dtb, enter_name, enter_password):
+    from PySimpleGUI import PySimpleGUI as sg
+    try:
+        a = open(dtb, 'rt')
+        data = a.readlines()
+    except:
+        print('4')
+    else:
+        try:
+            for nome in data:
+                if enter_name in nome and enter_password in nome:
+                    sg.popup_ok('Account found')
+                    break
+            else:
+                sg.popup_ok('Not account found. Try again')
+        except:
+            print('5')
+        finally:
+            a.close()
