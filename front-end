@@ -1,9 +1,11 @@
+import backend
 from PySimpleGUI import PySimpleGUI as sg
+
 
 dtb = 'database.txt'
 
-if not back.archive(dtb):
-    back.creat_file(dtb)
+if not backend.archive(dtb):
+    backend.creat_file(dtb)
 
 
 def start_window():
@@ -78,12 +80,12 @@ while True:
         window3 = creat_accont()
         window2.hide()
     if window == window3 and event == 'Next':
-        back.insert_file(dtb, values['creat_usuario'], values['creat_password'], values['password_verificantio'])
+        backend.insert_file(dtb, values['creat_usuario'], values['creat_password'], values['password_verificantio'])
     elif window == window2 and event == 'ente_accont':
         window4 = enter_accont()
         window2.hide()
     if window == window4 and event == 'Next':
-        back.earch(dtb, values['enter_name'], values['enter_password'])
+        backend.earch(dtb, values['enter_name'], values['enter_password'])
     elif window == window3 and event == 'Return':
         window3.hide()
         window2.un_hide()
