@@ -1,3 +1,5 @@
+from PySimpleGUI import PySimpleGUI as sg
+
 def archive(dtb):
     try:
         a = open(dtb, 'rt')
@@ -17,7 +19,6 @@ def creat_file(dtb):
 
 
 def insert_file(dtb, creat_usuario, creat_password, password_verificantio):
-    from PySimpleGUI import PySimpleGUI as sg
     try:
         a = open(dtb, 'at')
     except:
@@ -26,7 +27,7 @@ def insert_file(dtb, creat_usuario, creat_password, password_verificantio):
         try:
             if creat_usuario.count(' ') > 0:
                 sg.popup_ok('The name cannot be separated')
-            elif len(creat_usuario) == 0 and len(creat_password) > 5:
+            elif len(creat_usuario) == 0 and len(creat_password) > 8:
                 sg.popup_ok('And mandatory to have one name')
             elif len(creat_usuario) == 0 and len(creat_password) == 0:
                 sg.popup_ok('And mandatory to have one name and password')
@@ -50,7 +51,6 @@ def insert_file(dtb, creat_usuario, creat_password, password_verificantio):
 
 
 def earch(dtb, enter_name, enter_password):
-    from PySimpleGUI import PySimpleGUI as sg
     try:
         a = open(dtb, 'rt')
         data = a.readlines()
@@ -59,8 +59,18 @@ def earch(dtb, enter_name, enter_password):
     else:
         try:
             for nome in data:
-                if enter_name in nome and enter_password in nome:
+                if len(enter_password) < 8:
+                    sg.popup_ok('your password is not 8 characters long')
+                    break
+                elif enter_name not in nome and enter_password in nome:
+                    sg.popup_ok('Not account found. Try again')
+                    break
+                elif enter_name in nome and enter_password not in nome:
+                    sg.popup_ok('Not account found. Try again')
+                    break
+                elif enter_name in nome and enter_password in nome:
                     sg.popup_ok('Account found')
+                    print(nome)
                     break
             else:
                 sg.popup_ok('Not account found. Try again')
